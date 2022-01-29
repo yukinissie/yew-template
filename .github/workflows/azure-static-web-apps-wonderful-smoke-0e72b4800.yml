@@ -34,7 +34,7 @@ jobs:
         with:
           toolchain: stable
           target: x86_64-unknown-linux-gnu
-          components: rustfmt, clippy, trunk, wasm-bindgen-cli
+          components: rustfmt, clippy
           override: true
 
       - uses: actions-rs/cargo@v1
@@ -51,6 +51,10 @@ jobs:
       - uses: jetli/trunk-action@v0.1.0
         with:
           # Optional version of trunk to install(eg. 'v0.8.1', 'latest')
+          version: 'latest'
+      - uses: jetli/wasm-bindgen-action@v0.1.0
+        with:
+          # Optional version of wasm-bindgen to install(eg. '0.2.68', 'latest')
           version: 'latest'
       - run: |
           trunk build --release
