@@ -37,6 +37,13 @@ jobs:
           components: rustfmt, clippy
           override: true
 
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          target: wasm32-unknown-unknown
+          components: trunk, wasm-bindgen
+          override: true
+
       - uses: actions-rs/cargo@v1
         with:
           command: fmt
@@ -48,14 +55,14 @@ jobs:
         with:
           command: test
           args: --release --all-features
-      - uses: jetli/trunk-action@v0.1.0
-        with:
-          # Optional version of trunk to install(eg. 'v0.8.1', 'latest')
-          version: 'latest'
-      - uses: jetli/wasm-bindgen-action@v0.1.0
-        with:
-          # Optional version of wasm-bindgen to install(eg. '0.2.68', 'latest')
-          version: 'latest'
+      # - uses: jetli/trunk-action@v0.1.0
+      #   with:
+      #     # Optional version of trunk to install(eg. 'v0.8.1', 'latest')
+      #     version: 'latest'
+      # - uses: jetli/wasm-bindgen-action@v0.1.0
+      #   with:
+      #     # Optional version of wasm-bindgen to install(eg. '0.2.68', 'latest')
+      #     version: 'latest'
       - run: |
           trunk build --release
       - uses: actions/upload-artifact@v2
@@ -64,6 +71,7 @@ jobs:
           path: |
             dist
   deploy:
+    needs: [Build]
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest
     name: Deploy Job
