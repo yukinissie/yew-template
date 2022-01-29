@@ -101,7 +101,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Deploy Job
     steps:
-      - Download Web App 📦
+      - name: Download Web App 📦
         uses: actions/download-artifact@v2
         with:
           name: webapp_artifact
