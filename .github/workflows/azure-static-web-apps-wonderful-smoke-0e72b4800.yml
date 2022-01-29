@@ -21,8 +21,19 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
-      - uses: actions/cache@v2
+      - name: Checkout 🛎
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Install Python
+        uses: actions/setup-python@v2
+
+      - name: Restore mtime
+        run: python ./git-restore-mtime.py
+
+      - name: Get Cargo cache directory path 🛠
+        uses: actions/cache@v2
         with:
           path: |
             ~/.cargo/registry
@@ -47,23 +58,29 @@ jobs:
         with:
           command: fmt
           args: --all -- --check
+
       - uses: actions-rs/cargo@v1
         with:
           command: clippy
+
       - uses: actions-rs/cargo@v1
         with:
           command: test
           args: --release --all-features
+  
       - uses: jetli/trunk-action@v0.1.0
         with:
           # Optional version of trunk to install(eg. 'v0.8.1', 'latest')
           version: 'latest'
+
       - uses: jetli/wasm-bindgen-action@v0.1.0
         with:
           # Optional version of wasm-bindgen to install(eg. '0.2.68', 'latest')
           version: 'latest'
+
       - run: |
           trunk build --release
+
       - uses: actions/upload-artifact@v2
         with:
           name: web_client_artifact
