@@ -45,6 +45,7 @@ jobs:
           toolchain: stable
           target: wasm32-unknown-unknown
           override: true
+          profile: minimal
 
       - name: Install trunk 🧳
         uses: jetli/trunk-action@v0.1.0
