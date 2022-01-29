@@ -53,7 +53,7 @@ jobs:
           # Optional version of trunk to install(eg. 'v0.8.1', 'latest')
           version: 'latest'
       - run: |
-        trunk build --release
+          trunk build --release
       - uses: actions/upload-artifact@v2
         with:
           name: web_client_artifact
